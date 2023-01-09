@@ -1,0 +1,36 @@
+curl --location --request POST 'http://localhost:8000/inputValidation/unsecure2' \
+--header 'Content-Type: application/json' \
+--data-raw '{"username":"userA",
+"$where": "function() { while(1);}"}'
+
+
+
+curl --location --request POST 'http://localhost:8000/inputValidation/unsecure' \
+--header 'Content-Type: application/json' \
+--data-raw '{"username":"userA",
+"password":{"$gt":""}}'
+
+
+curl --location --request POST 'http://localhost:8000/inputValidation/secure' \
+--header 'Content-Type: application/json' \
+--data-raw '{"username":"userA",
+"password":{"$gt":""}}'
+
+
+curl --location --request POST 'http://localhost:8000/login' \
+--header 'Content-Type: application/json' \
+--data-raw '{"username":"userB","password":"userB12345"}'
+
+
+curl --location --request GET 'http://localhost:8000/hello'
+
+curl --location --request GET 'http://localhost:8000/hello/authenticated' \
+--header 'Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6InVzZXJCIiwiaWF0IjoxNjczMjQ3MjU5LCJleHAiOjE2NzMyNTA4NTl9.s_tO7M7L78hWw2Jez1kDJtC-DrUaqEfXiBN5H4SD3mI'
+
+curl --location --request GET 'http://localhost:8000/hello/authorized' \
+--header 'Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6InVzZXJCIiwiaWF0IjoxNjczMjQ3MjU5LCJleHAiOjE2NzMyNTA4NTl9.s_tO7M7L78hWw2Jez1kDJtC-DrUaqEfXiBN5H4SD3mI'
+
+
+curl --location --request GET 'http://localhost:8000/cors' \
+--header 'Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6InVzZXJCIiwiaWF0IjoxNjczMjQ3MjU5LCJleHAiOjE2NzMyNTA4NTl9.s_tO7M7L78hWw2Jez1kDJtC-DrUaqEfXiBN5H4SD3mI' \
+--header 'origin: http://localhost:4001'
