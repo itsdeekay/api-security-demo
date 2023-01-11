@@ -16,7 +16,7 @@ $("document").ready(() => {
 function getRecords() {
     $.ajax({
         method: 'GET',
-        url: '/api/data',
+        url: 'http://localhost:8000/api/data',
         dataType: 'json',
         success: (res) => {
             if (res && res.length > 0) {
@@ -42,7 +42,7 @@ function getRecords() {
 function createRecord(data) {
     $.ajax({
         method: 'POST',
-        url: '/api/data',
+        url: 'http://localhost:8000/api/data',
         data,
         dataType: 'json',
         success: (res) => {
