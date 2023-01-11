@@ -1,8 +1,6 @@
-const express = require('express');
+const router = require('express').Router();
 const rateLimit = require('express-rate-limit')
-let router = express.Router();
 const helper = require('./../utility/helper');
-
 
 const limiter = rateLimit({
 	windowMs: 1 * 60 * 1000, // 1 minutes
@@ -16,7 +14,8 @@ router.get('/', limiter, function (req, res, next) {
 });
 
 router.post('/',limiter, function (req, res, next) {
-    let body = req.body
+    let body = req.body;
+    body._id = helper.getRandomID();
     res.json(helper.writeData(body));
 });
 
