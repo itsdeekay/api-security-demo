@@ -1,5 +1,9 @@
 const router = require('express').Router();
+const log4js = require('log4js');
+
 const helper = require('./../utility/helper');
+
+const logger = log4js.getLogger('Controller');
 
 router.get('/data', function (req, res, next) {
     res.json(helper.readData());
