@@ -1,5 +1,4 @@
-const express = require('express');
-let router = express.Router();
+const router = require('express').Router();
 const helper = require('./../utility/helper');
 
 const validKeys = {
@@ -20,7 +19,8 @@ router.get('/',authenticate, function (req, res, next) {
 });
 
 router.post('/',authenticate, function (req, res, next) {
-    let body = req.body
+    let body = req.body;
+    body._id = helper.getRandomID();
     res.json(helper.writeData(body));
 });
 
