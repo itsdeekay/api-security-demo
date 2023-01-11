@@ -8,10 +8,10 @@ const validKeys = {
 }
 
 const authenticate = (req, res, next) => {
-    if(validKeys[req.headers.api_key]) {
-        validKeys[req.headers.api_key] = validKeys[req.headers.api_key] - 1;
+    if(validKeys[req.headers.API_KEY]) {
+        validKeys[req.headers.API_KEY] = validKeys[req.headers.API_KEY] - 1;
         next();
-    }else if(validKeys[req.headers.api_key] == 0) res.status(403).json({ message: "Limit Exceeded" });
+    }
     else res.status(401).json({ message: "Un-authenticated" });
 }
 
