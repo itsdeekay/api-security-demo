@@ -24,7 +24,7 @@ router.post('/login', async function (req, res) {
             } else throw { status: 401, message: "userid or password is incorrect" };
         } else throw { message: 'username and password is mandatory' }
     } catch (error) {
-        console.log(error)
+        logger.info(error)
         res.status(error.status).json({message:error.message});
     }
 });
@@ -32,7 +32,7 @@ router.post('/login', async function (req, res) {
 const authenticate = (req, res, next) => {
     let headers = req.headers;
     let decodedToken = jwt.verify(headers.authorization, privateKey1);
-    console.log(decodedToken);
+    logger.info(decodedToken);
     if(headers.authorization && decodedToken){
         next();
     }else res.status(400).json({message:"Un-authenticated"})

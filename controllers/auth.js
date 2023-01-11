@@ -25,7 +25,7 @@ app.post('/', async function (req, res) {
             } else throw { status: 401, message: "userid or password is incorrect" };
         } else throw { message: 'username and password is mandatory' }
     } catch (error) {
-        console.log(error)
+        logger.info(error)
         res.status(error.status).json({message:error.message});
     }
 });
@@ -35,7 +35,7 @@ app.post('/', async function (req, res) {
 //     let users = ['userA','userB','userC'];
 //     users.forEach(user=>{
 //         bcrypt.hash(user+'12345', 10).then(function(hash) {
-//             console.log(user, hash);
+//             logger.info(user, hash);
 //         });
 //     })
 // }
