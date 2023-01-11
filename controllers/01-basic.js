@@ -1,13 +1,13 @@
-const express = require('express');
-let router = express.Router();
+const router = require('express').Router();
 const helper = require('./../utility/helper');
 
-router.get('/', function (req, res, next) {
+router.get('/data', function (req, res, next) {
     res.json(helper.readData());
 });
 
-router.post('/', function (req, res, next) {
+router.post('/data', function (req, res, next) {
     let body = req.body
+    body._id = helper.getRandomID();
     res.json(helper.writeData(body));
 });
 

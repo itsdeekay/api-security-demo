@@ -39,3 +39,4 @@ config/runtime.yaml
 .vscode
 
 .scannerwork/
+.DS_Store
