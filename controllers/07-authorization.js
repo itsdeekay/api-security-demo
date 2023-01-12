@@ -1,44 +1,48 @@
 const router = require('express').Router();
 const helper = require('./../utility/helper');
-const bcrypt = require('bcryptjs');
+const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const privateKey = "the-super-strong-secrect";
 const users = require('../data/users');
 
 global.tokens = {};
 
-const getUser = (token) => {
+function getUser(token) {
     return global.tokens[token];
 }
 
-const putUser = (token, user) => {
+function putUser(token, user) {
     global.tokens[token] = user;
 }
 
 router.post('/login', async function (req, res) {
     let body = req.body;
     try {
-        if (body.username && body.password) {
-            let user = users.getDBUser(body.username);
-            if (!user) throw { status: 401, message: "userid or password is incorrect" };
-            let result = await bcrypt.compare(body.password, user.password);
-            if (result) {
-                const token = jwt.sign({ id: user.id }, privateKey, { expiresIn: '1h' });
-                delete user.password;
-                putUser(token, user);
-                return res.status(200).send({
-                    token,
-                    user: user
-                });
-            } else throw { status: 401, message: "userid or password is incorrect" };
-        } else throw { message: 'username and password is mandatory' }
+        if (!body.username || !body.password) {
+            throw { message: 'username and password is mandatory' };
+        }
+        let user = users.getDBUser(body.username);
+        if (!user) {
+            throw { status: 401, message: "userid or password is incorrect" };
+        }
+        let result = await bcrypt.compare(body.password, user.password);
+        if (!result) {
+            throw { status: 401, message: "userid or password is incorrect" };
+        }
+        const token = jwt.sign({ id: user.id }, privateKey, { expiresIn: '1h' });
+        delete user.password;
+        putUser(token, user);
+        res.status(200).send({
+            token,
+            user: user
+        });
     } catch (error) {
         console.log(error)
         res.status(error.status).json({ message: error.message });
     }
 });
 
-const authenticate = (req, res, next) => {
+function authenticate(req, res, next) {
     let headers = req.headers;
     try {
         if (headers.authorization) {
@@ -50,23 +54,23 @@ const authenticate = (req, res, next) => {
     }
 }
 
-const authorized = (req, res, next) => {
+function authorized(req, res, next) {
     let headers = req.headers;
     try {
         let user = getUser(headers.authorization);
-        if (!user) throw {code:401, message: "Un-authenticated" };
+        if (!user) throw { code: 401, message: "Un-authenticated" };
         if (user.authorized) next();
-        else throw {code:403, message: "Un-authorized" };
+        else throw { code: 403, message: "Un-authorized" };
     } catch (error) {
         res.status(error.code).json(error.message)
     }
 }
 
-router.get('/', authenticate, authorized, function (req, res, next) {
+router.get('/data', authenticate, authorized, function (req, res, next) {
     res.json(helper.readData());
 });
 
-router.post('/', authenticate, authorized, function (req, res, next) {
+router.post('/data', authenticate, authorized, function (req, res, next) {
     let body = req.body
     body._id = helper.getRandomID();
     res.json(helper.writeData(body));
