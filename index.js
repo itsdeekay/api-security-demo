@@ -2,6 +2,13 @@ const path = require('path');
 const express = require('express');
 const log4js = require('log4js');
 const helper = require('./utility/helper');
+const https = require('https');
+const fs = require('fs');
+
+const options = {
+    key: fs.readFileSync('localhost-key.pem'),
+    cert: fs.readFileSync('localhost.pem'),
+  };
 
 const LOG_LEVEL = process.env.LOG_LEVEL || 'info';
 
@@ -46,3 +53,5 @@ app.use(function (err, req, res, next) {
 app.listen(8000, function () {
     logger.info('Listening to Port 8000');
 });
+
+https.createServer(options, app).listen(443)
