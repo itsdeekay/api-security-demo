@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <base href="/">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/bootstrap.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <title>API Security Demo</title>
+    <script src="/js/jquery-3.6.3.js"></script>
+    <script src="/js/bootstrap.js"></script>
+</head>
+
+<body>
+    <header class="p-3 border-bottom mb-3">
+        <h3>API Security Demo</h3>
+    </header>
+    <div class="container text-center">
+        <h2 class="text-secondary">TOTP Generator</h2>
+        <h1 id="token" class="text-primary"></h1>
+        <h5 id="countdown" class="text-dark"></h5>
+    </div>
+    <script>
+        $("document").ready(() => {
+            getToken();
+            setInterval(() => {
+                const date = new Date();
+                const sec = date.getSeconds();
+                $("#countdown").text(30 - (sec % 30));
+                if (sec % 30 == 0) {
+                    getToken();
+                }
+            }, 1000);
+        });
+        function getToken() {
+            $.ajax({
+                method: 'GET',
+                url: 'http://localhost:8000/api/token',
+                dataType: 'json',
+                success: (res) => {
+                    if (res) {
+                        $("#token").text(res.token);
+                    }
+                },
+                error: (err) => {
+                    console.error(err);
+                    window.alert(err.responseText);
+                }
+            });
+        }
+
+    </script>
+</body>
+
+</html>
