@@ -45,7 +45,7 @@ router.post('/login', async function (req, res) {
 function authenticate(req, res, next) {
     let headers = req.headers;
     try {
-        if (headers.authorization) {
+        if (headers.authorization && headers.authorization != 'null') {
             let decodedToken = jwt.verify(headers.authorization, privateKey);
             next();
         } else throw { message: "Un-authenticated" }

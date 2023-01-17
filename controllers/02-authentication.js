@@ -10,7 +10,7 @@ const privateKey = "the-super-strong-secrect";
 function authCheck(req, res, next) {
     let authorization = req.header('authorization');
     try {
-        if (!authorization) {
+        if (!authorization || authorization == 'null') {
             throw { message: "Unauthorised" }
         }
         jwt.verify(authorization, privateKey);

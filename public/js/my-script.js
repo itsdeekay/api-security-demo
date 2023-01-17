@@ -18,6 +18,9 @@ function getRecords() {
         method: 'GET',
         url: 'http://localhost:8000/api/data',
         dataType: 'json',
+        headers: {
+            'authorization' : sessionStorage.getItem("authorization")
+        },
         success: (res) => {
             if (res && res.length > 0) {
                 $("#no-records").remove();
@@ -45,6 +48,9 @@ function createRecord(data) {
         url: 'http://localhost:8000/api/data',
         data,
         dataType: 'json',
+        headers: {
+            'authorization' : sessionStorage.getItem("authorization")
+        },
         success: (res) => {
             console.log(res);
             $("#no-records").remove();
@@ -55,6 +61,9 @@ function createRecord(data) {
             cols.push(`<td>${res.contactNo}</td>`);
             cols.push('<td></td>');
             $("#my-table").append(`<tr>${cols.join('\n')}</tr>`);
+            $("#email").val('');
+            $("#name").val('');
+            $("#contactNo").val('');
         },
         error: (err) => {
             console.error(err);

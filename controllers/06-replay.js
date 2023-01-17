@@ -5,7 +5,7 @@ const log4js = require('log4js');
 const { TOTP, Secret } = require('otpauth');
 const QRCode = require('qrcode');
 
-const helper = require('./../utility/helper');
+const helper = require('../utility/helper');
 const users = require('../data/users');
 
 const logger = log4js.getLogger('Controller');
@@ -28,7 +28,7 @@ QRCode.toFile('qrcode.jpg', uri, (err) => {
 function authCheck(req, res, next) {
     let authorization = req.header('authorization');
     try {
-        if (!authorization) {
+        if (!authorization || authorization == 'null') {
             throw { message: "Unauthorised" }
         }
         jwt.verify(authorization, privateKey);
