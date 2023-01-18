@@ -13,13 +13,13 @@ $("document").ready(() => {
 function login(data) {
     $.ajax({
         method: 'POST',
-        url: 'http://localhost:8000/api/login',
+        url: '/api/login',
         data,
         dataType: 'json',
         success: (res) => {
             console.log(res);
             sessionStorage.setItem("authorization", res.token);
-            window.location = "http://localhost:8000/index.html";
+            window.location = "/index.html";
         },
         error: (err) => {
             console.error(err);

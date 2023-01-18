@@ -16,7 +16,7 @@ $("document").ready(() => {
 function getRecords() {
     $.ajax({
         method: 'GET',
-        url: 'http://localhost:8000/api/data',
+        url: '/api/data',
         dataType: 'json',
         headers: {
             'authorization' : sessionStorage.getItem("authorization")
@@ -45,7 +45,7 @@ function getRecords() {
 function createRecord(data) {
     $.ajax({
         method: 'POST',
-        url: 'http://localhost:8000/api/data',
+        url: '/api/data',
         data,
         dataType: 'json',
         headers: {
